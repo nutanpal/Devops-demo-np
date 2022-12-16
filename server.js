@@ -19,10 +19,10 @@ var rollbar = new Rollbar({
 rollbar.log("Hello world!");
 //cHANGE STUDENTS TO STUDENT CHK RbLOG THEN FIX BACK STDT(S)
 
-const student = ["Jimmy", "Timothy", "Jimothy"];
+const students = ["Jimmy", "Timothy", "Jimothy"];
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 app.get("/api/students", (req, res) => {
@@ -33,13 +33,14 @@ app.get("/api/students", (req, res) => {
 app.post("/api/students", (req, res) => {
   let { name } = req.body;
 
-  const index = students.findIndex((student) => {
+  const index = student.findIndex((student) => {
     return student === name;
   });
 
   try {
     if (index === -1 && name !== "") {
       students.push(name);
+      rollbar.info("new student added");
       res.status(200).send(students);
     } else if (name === "") {
       rollbar.error("someone tried to enter a blank student");
@@ -64,7 +65,6 @@ app.delete("/api/students/:index", (req, res) => {
 const port = process.env.PORT || 5050;
 
 app.listen(port, () => console.log(`Server listening on ${port}`));
-
 
 ///////////NP repeat///////////////////
 /*require('dotenv').config()
