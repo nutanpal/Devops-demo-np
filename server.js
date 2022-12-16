@@ -22,7 +22,7 @@ rollbar.log("Hello world!");
 const students = ["Jimmy", "Timothy", "Jimothy"];
 
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "./public/index.html"));
+  res.sendFile(path.join(__dirname, "/index.html"));
 });
 
 app.get("/api/students", (req, res) => {
@@ -33,14 +33,13 @@ app.get("/api/students", (req, res) => {
 app.post("/api/students", (req, res) => {
   let { name } = req.body;
 
-  const index = student.findIndex((student) => {
+  const index = students.findIndex((student) => {
     return student === name;
   });
 
   try {
     if (index === -1 && name !== "") {
       students.push(name);
-      rollbar.info("new student added");
       res.status(200).send(students);
     } else if (name === "") {
       rollbar.error("someone tried to enter a blank student");
